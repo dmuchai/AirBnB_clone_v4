@@ -1,0 +1,7 @@
+hbnb_venv/
+__pycache__/
+*.pyc
+*.pyo
+instance/
+*.log
+
