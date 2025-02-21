@@ -4,4 +4,5 @@ __pycache__/
 *.pyo
 instance/
 *.log
+hbnbv4_venv/
 
