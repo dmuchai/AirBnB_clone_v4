@@ -6,3 +6,6 @@ instance/
 *.log
 hbnbv4_venv/
 
+__pycache__/
+*.pyc
+*.pyo
