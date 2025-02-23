@@ -9,3 +9,5 @@ hbnbv4_venv/
 __pycache__/
 *.pyc
 *.pyo
+__pycache__/
+*.pyc
