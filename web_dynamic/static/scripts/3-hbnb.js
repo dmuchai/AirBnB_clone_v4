@@ -44,17 +44,26 @@ $(document).ready(function () {
         const number_bathrooms = $('<div></div>').text(place.number_bathrooms);
         information.append(max_guest, number_rooms, number_bathrooms);
 
-        const urri = '/http://0.0.0.0:5001/api/v1/users/' + place.user_id;
+        const urrl = 'http://0.0.0.0:5001/api/v1/users/' + place.user_id;
+	let user = $('<div></div>');
         $.get(urrl, function (data) {
-          const user = $('<div></div>');
           user.html('<b>Owner:</b>' + data.first_name + data.last_name);
         });
 
         const description = $('<div></div>').text(place.description);
 
+	title_box.addClass('.title_box');
+	price_by_night.addClass('.price_by_night');
+	information.addClass('.information');
+	max_guest.addClass('.max_guest');
+	number_rooms.addClass('.number_rooms');
+	number_bathrooms.addClass('.number_bathrooms');
+	user.addClass('.user');
+	description.addClass('.description');
+
         article.append(title_box, information, user, description);
 
-        $('section .places').append(article);
+        $('.places').append(article);
       });
     }
   });
