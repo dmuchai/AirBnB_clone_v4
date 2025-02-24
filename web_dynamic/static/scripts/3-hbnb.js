@@ -35,31 +35,31 @@ $(document).ready(function () {
 
         const title_box = $('<div></div>');
         const name = $('<h2></h2>').text(place.name);
-        const price_by_night = $('<div></div>').text(place.price_by_night);
+        const price_by_night = $('<div></div>').text("$" + place.price_by_night);
         title_box.append(name, price_by_night);
 
         const information = $('<div></div>');
-        const max_guest = $('<div></div>').text(place.max_guest);
-        const number_rooms = $('<div></div>').text(place.number_rooms);
-        const number_bathrooms = $('<div></div>').text(place.number_bathrooms);
+        const max_guest = $('<div></div>').text(place.max_guest + " Guests");
+        const number_rooms = $('<div></div>').text(place.number_rooms + " Rooms");
+        const number_bathrooms = $('<div></div>').text(place.number_bathrooms + " Bathrooms");
         information.append(max_guest, number_rooms, number_bathrooms);
 
         const urrl = 'http://0.0.0.0:5001/api/v1/users/' + place.user_id;
 	let user = $('<div></div>');
         $.get(urrl, function (data) {
-          user.html('<b>Owner:</b>' + data.first_name + data.last_name);
+          user.html('<b>Owner:</b> ' + data.first_name + " " + data.last_name);
         });
 
         const description = $('<div></div>').text(place.description);
 
-	title_box.addClass('.title_box');
-	price_by_night.addClass('.price_by_night');
-	information.addClass('.information');
-	max_guest.addClass('.max_guest');
-	number_rooms.addClass('.number_rooms');
-	number_bathrooms.addClass('.number_bathrooms');
-	user.addClass('.user');
-	description.addClass('.description');
+	title_box.addClass('title_box');
+	price_by_night.addClass('price_by_night');
+	information.addClass('information');
+	max_guest.addClass('max_guest');
+	number_rooms.addClass('number_rooms');
+	number_bathrooms.addClass('number_bathrooms');
+	user.addClass('user');
+	description.addClass('description');
 
         article.append(title_box, information, user, description);
 
