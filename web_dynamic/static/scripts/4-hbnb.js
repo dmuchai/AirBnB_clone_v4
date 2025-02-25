@@ -1,6 +1,7 @@
 $(document).ready(function () {
   const checkedAmenities = {};
 
+  // Handle checkbox changes
   $('input[type="checkbox"]').change(function () {
     const amenityId = $(this).attr('data-id');
     const amenityName = $(this).attr('data-name');
@@ -25,49 +26,59 @@ $(document).ready(function () {
     }
   });
 
-  // Function to load places
-  function loadPlaces (filters = {}) {
+  // Function to fetch and display places
+  function fetchPlaces (filters = {}) {
     $.ajax({
       url: 'http://0.0.0.0:5001/api/v1/places_search/',
       type: 'POST',
       data: JSON.stringify(filters),
       contentType: 'application/json',
       success: function (data) {
-        $('section.places').empty(); // Clear previous results
-
+        $('.places').empty();
         $.each(data, function (index, place) {
           const article = $('<article></article>');
 
-          const title_box = $('<div class="title_box"></div>');
-          title_box.append(`<h2>${place.name}</h2>`);
-          title_box.append(`<div class="price_by_night">$${place.price_by_night}</div>`);
+          const title_box = $('<div></div>');
+          const name = $('<h2></h2>').text(place.name);
+          const price_by_night = $('<div></div>').text("$" + place.price_by_night);
+          title_box.append(name, price_by_night);
 
-          const information = $('<div class="information"></div>');
-          information.append(`<div class="max_guest">${place.max_guest} Guests</div>`);
-          information.append(`<div class="number_rooms">${place.number_rooms} Rooms</div>`);
-          information.append(`<div class="number_bathrooms">${place.number_bathrooms} Bathrooms</div>`);
+          const information = $('<div></div>');
+          const max_guest = $('<div></div>').text(place.max_guest + " Guests");
+          const number_rooms = $('<div></div>').text(place.number_rooms + " Rooms");
+          const number_bathrooms = $('<div></div>').text(place.number_bathrooms + " Bathrooms");
+          information.append(max_guest, number_rooms, number_bathrooms);
 
-          const description = $('<div class="description"></div>').html(place.description);
-
-          article.append(title_box, information, description);
-
-          // Fetch owner data
-          $.get('http://0.0.0.0:5001/api/v1/users/' + place.user_id, function (user) {
-            const userDiv = $('<div class="owner"></div>').html(`<b>Owner:</b> ${user.first_name} ${user.last_name}`);
-            article.append(userDiv);
+          const userUrl = 'http://0.0.0.0:5001/api/v1/users/' + place.user_id;
+          let user = $('<div></div>');
+          $.get(userUrl, function (data) {
+            user.html('<b>Owner:</b> ' + data.first_name + " " + data.last_name);
           });
 
-          $('section.places').append(article);
+          const description = $('<div></div>').text(place.description);
+
+          title_box.addClass('title_box');
+          price_by_night.addClass('price_by_night');
+          information.addClass('information');
+          max_guest.addClass('max_guest');
+          number_rooms.addClass('number_rooms');
+          number_bathrooms.addClass('number_bathrooms');
+          user.addClass('user');
+          description.addClass('description');
+
+          article.append(title_box, information, user, description);
+
+          $('.places').append(article);
         });
       }
     });
   }
 
-  // Initial load with empty filters
-  loadPlaces({});
+  // Fetch places on page load
+  fetchPlaces();
 
-  // When the search button is clicked, filter by amenities
+  // Fetch places when search button is clicked
   $('button').click(function () {
-    loadPlaces({ amenities: Object.keys(checkedAmenities) });
+    fetchPlaces({ amenities: Object.keys(checkedAmenities) });
   });
 });
